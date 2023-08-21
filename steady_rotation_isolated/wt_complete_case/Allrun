@@ -1,0 +1,26 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+cp -r ../stationary_mesh/constant/polyMesh constant/
+
+rm -rf constant/polyMesh/meshMetaDict
+
+runApplication mergeMeshes ./ ../rotating_mesh/ -overwrite
+
+runApplication renumberMesh -overwrite
+
+runApplication createPatch -overwrite
+
+touch zzz.foam
+
+runApplication checkMesh -constant
+
+runApplication topoSet
+
+restore0Dir
+
+runApplication moveDynamicMesh -noFunctionObjects -checkAMI
+
+#------------------------------------------------------------------------------

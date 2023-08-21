@@ -1,0 +1,250 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                |
+| \\      /  F ield         | cfMesh: A library for mesh generation          |
+|  \\    /   O peration     |                                                |
+|   \\  /    A nd           | Author: Franjo Juretic                         |
+|    \\/     M anipulation  | E-mail: franjo.juretic@c-fields.com            |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version   2.0;
+    format    ascii;
+    class     dictionary;
+    location  "system";
+    object    meshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// mandatory settings
+
+surfaceFile "domain.fms";
+
+maxCellSize 0.04608;
+
+// optional settings
+
+// size of the cells at the boundary
+//boundaryCellSize 0.01; // [m]
+
+// distance from the boundary at which bboundaryCellSize shall be used
+//boundaryCellSizeRefinementThickness 0.1; // [m]
+
+// minimum cell size allowed in the automatic refinement procedure
+//minCellSize 0.01; // [m]
+
+
+// refinement zones at the patches of the mesh
+localRefinement
+{
+    rotor_fillet_05
+    {
+        //cellSize 0.002;
+        //refinementThickness 0.04;
+        additionalRefinementLevels 4;
+    }
+}
+
+
+// refinement zones inside the mesh based on primitive geometric shapes
+objectRefinements
+{
+    lvl1
+    {
+        type        cone;
+        p0          (-0.25 0 0);
+        p1          ( 0.15 0 0);
+        radius0     1.35;
+        radius1     1.35;
+        additionalRefinementLevels 1;
+    }
+}
+
+
+// refinement regions intersected by surfaces
+surfaceMeshRefinement
+{
+    tip
+    {
+        surfaceFile "tip_ref_05.stl";
+        //cellSize 0.001;
+        //refinementThickness 0.001;
+        additionalRefinementLevels 6;
+    }
+    
+    te
+    {
+        surfaceFile "te_ref_05.stl";
+        //cellSize 0.001;
+        //refinementThickness 0.001;
+        additionalRefinementLevels 6;
+    }
+    
+    le
+    {
+        surfaceFile "le_ref_05.stl";
+        //cellSize 0.001;
+        //refinementThickness 0.001;
+        additionalRefinementLevels 6;
+    }
+    
+    te_bot
+    {
+        surfaceFile "te_bot_ref_05.stl";
+        //cellSize 0.004;
+        //refinementThickness 0.01;
+        additionalRefinementLevels 5;
+    }
+}
+
+
+// refinement regions intersected by edges
+/*edgeMeshRefinement
+{
+    blade
+    {
+        edgeFile "blade_featureEdges.vtk";
+        cellSize 0.001;
+        //refinementThickness 0.01;
+        //additionalRefinementLevels 4;
+    }
+    
+    hub
+    {
+        edgeFile "hub_featureEdges.vtk";
+        cellSize 0.002;
+    }
+}*/
+
+
+// keep template cells which intersect boundary
+//keepCellsIntersectingBoundary 0; // 1 keep or 0 only internal cells are used
+
+// remove cells where distinct parts of the mesh are joined together
+// active only when keepCellsIntersectingBoundary is active
+//checkForGluedMesh 1; // 1 active or 0 inactive
+
+// keep cells which intersect selected patches/subsets in the mesh template
+// active when keepCellsIntersectingBoundary is switched off
+/*keepCellsIntersectingPatches
+{
+    blades
+    {
+        keepCells 1; // 1 active or 0 inactive
+    }
+}*/
+
+// remove cells which intersect selected patches/subsets from the mesh template 
+// active when keepCellsIntersectingBoundary is switched on
+/*removeCellsIntersectingPatches
+{
+    rotor
+    {
+        keepCells 1; // 1 active or 0 inactive
+    }
+}*/
+
+
+// settings for boundary layers
+boundaryLayers
+{/*
+    patchBoundaryLayers
+    {
+        rotor_fillet_05
+        {
+            nLayers 1;
+            thicknessRatio 1;
+            //maxFirstLayerThickness 0.001;
+            //allowDiscontinuity 0;
+        }
+    }
+
+    optimiseLayer 1;
+
+    optimisationParameters
+    {
+        nSmoothNormals 3;
+        maxNumIterations 2;
+        featureSizeFactor 0.4;
+        reCalculateNormals 1;
+        relThicknessTol 0.1;
+    }*/
+}
+
+/*
+anisotropicSources
+{
+    Box
+    {
+        type    box;
+        centre  (2800 0 250);
+        lengthX 6000;
+        lengthY 1000;
+        lengthZ 200;
+        scaleX  1;
+        scaleY  1;
+        scaleZ  0.3;
+    }
+
+
+    planeUpper
+    {
+	type plane;
+	normal (0 0 1);
+	origin (0 0 250);
+	scalingDistance 125;
+	scalingFactor 0.5;
+    }
+
+    planeLower
+    {
+	type plane;
+	normal (0 0 -1);
+	origin (0 0 250);
+	scalingDistance 125;
+	scalingFactor 0.5;
+    }
+
+}*/
+
+
+/*workflowControls
+{
+//stopAfter templateGeneration;
+//stopAfter surfaceTopology;
+//stopAfter surfaceProjection;
+//stopAfter patchAssignment;
+//stopAfter edgeExtraction;
+//stopAfter boundaryLayerGeneration;
+//stopAfter meshOptimisation;
+//stopAfter boundaryLayerRefinement;
+
+//restartFromLatestStep 1;
+}*/
+
+
+// settings used for assigning new names to patches in the surface mesh
+// when transferring them onto the volume mesh
+renameBoundary
+{
+    //defaultName sides;
+    //defaultType cyclic;
+
+    newPatchNames
+    {
+        ami { newName ami_inner; type patch; }
+        rotor_fillet_05 { newName rotor; type wall; }
+    }
+}
+
+// stops the meshing process when it is not possible to capture all geometric features
+//enforceGeometryConstraints 1; // 1 active or 0 inactive
+
+/*meshQualitySettings
+{
+    maxNonOrthogonality 30;
+
+    minTetQuality       1e-10;
+}*/
+
+// ************************************************************************* //

@@ -1,0 +1,16 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+cat *.stl > domain.stl
+
+runApplication surfaceFeatureEdges domain.stl domain.fms
+
+runApplication cartesianMesh
+
+touch zzz.foam
+
+runApplication checkMesh -allGeometry -allTopology -writeAllFields -writeSets vtk
+
+#------------------------------------------------------------------------------

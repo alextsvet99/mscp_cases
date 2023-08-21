@@ -1,0 +1,61 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // convert the sets of cells created by checkMesh to cellZones 
+    {
+        name rotating_region;
+        type cellZoneSet;
+        action new;
+        source setToCellZone;
+        set region1;
+    }
+    {
+        name stationary_region;
+        type cellZoneSet;
+        action new;
+        source setToCellZone;
+        set region0;
+    }
+    
+    // create a set of faces which belong to the ami patches
+    {
+        name ami_faceSet;
+        type faceSet;
+        action new;
+        source patchToFace;
+        patch ami_in;
+    }
+    {
+        name ami_faceSet;
+        type faceSet;
+        action add;
+        source patchToFace;
+        patch ami_out;
+    }
+    
+    // convert the set of faces created above to a faceZone
+    /*{
+        name ami_faceZone;
+        type faceZoneSet;
+        action new;
+        source setToFaceZone;
+        faceSet ami_faceSet;
+    }*/
+);
+
+// ************************************************************************* //

@@ -1,0 +1,92 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+sampling_PIV
+{
+    type surfaces;
+    libs ("libsampling.so");
+
+    surfaceFormat vtk;
+    fields (p U); // (p U Q)
+
+    surfaces
+    {
+        yNormal
+        {
+            type            cuttingPlane;
+            planeType       pointAndNormal;
+            pointAndNormalDict
+            {
+                point   (0 0 0);
+                normal  (0 1 0);
+            }
+            interpolate     true;
+        }
+        
+        xNormal_1D
+        {
+            type            cuttingPlane;
+            planeType       pointAndNormal;
+            pointAndNormalDict
+            {
+                point   (2.37 0 0);
+                normal  (1 0 0);
+            }
+            interpolate     true;
+        }
+        
+        xNormal_2D
+        {
+            type            cuttingPlane;
+            planeType       pointAndNormal;
+            pointAndNormalDict
+            {
+                point   (4.74 0 0);
+                normal  (1 0 0);
+            }
+            interpolate     true;
+        }
+        
+        xNormal_4D
+        {
+            type            cuttingPlane;
+            planeType       pointAndNormal;
+            pointAndNormalDict
+            {
+                point   (9.48 0 0);
+                normal  (1 0 0);
+            }
+            interpolate     true;
+        }
+        
+        xNormal_6D
+        {
+            type            cuttingPlane;
+            planeType       pointAndNormal;
+            pointAndNormalDict
+            {
+                point   (-2.78 0 0);
+                normal  (1 0 0);
+            }
+            interpolate     true;
+        }
+    }
+    
+    // Optional (inherited) entries
+    //region              region0;
+    //enabled             true;
+    log                 false;
+    timeStart           0.99585;
+    //timeEnd             1000;
+    executeControl      runTime; // none timeStep writeTime runTime adjustableRunTime clockTime cpuTime onEnd
+    executeInterval     0.02075;
+    writeControl        runTime;
+    writeInterval       0.02075;
+}
+
+// ************************************************************************* //
