@@ -23,4 +23,8 @@ restore0Dir
 
 runApplication moveDynamicMesh -noFunctionObjects -checkAMI
 
+# decomposePar
+
+# mpirun -np 128 pimpleFoam -parallel
+
 #------------------------------------------------------------------------------
