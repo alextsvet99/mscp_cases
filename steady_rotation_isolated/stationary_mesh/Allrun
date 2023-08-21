@@ -11,6 +11,6 @@ runApplication cartesianMesh
 
 touch zzz.foam
 
-runApplication checkMesh -allGeometry -allTopology -writeAllFields -writeSets vtk
+runApplication checkMesh -constant -allGeometry -allTopology -writeAllFields -writeSets vtk
 
 #------------------------------------------------------------------------------
