@@ -1,0 +1,11 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+#-----------------------------------------------------------------------------
+
+(cd rotating_mesh && ./Allrun)
+
+(cd stationary_mesh && ./Allrun)
+
+(cd wt_complete_case && ./Allrun)
+
+#------------------------------------------------------------------------------

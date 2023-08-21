@@ -1,0 +1,41 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh dynamicOversetFvMesh;
+
+motionSolver solidBody;
+
+cellZone moving_region;
+
+solidBodyMotionFunction  multiMotion; // multiMotion oscillatingLinearMotion rotatingMotion;
+
+rotation
+{
+    solidBodyMotionFunction rotatingMotion;
+    origin (0 0 0);
+    axis (1 0 0);
+    omega 25.23746; // rad/s
+}
+
+surge
+{
+    solidBodyMotionFunction oscillatingLinearMotion;
+    amplitude (0.3 0 0);
+    omega 12.56637; // rad/s
+}
+
+
+// ************************************************************************* //

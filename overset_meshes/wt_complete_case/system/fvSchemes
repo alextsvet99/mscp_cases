@@ -1,0 +1,111 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    div(phi,U)      Gauss limitedLinearV 1;
+    div(phi,k)      Gauss limitedLinear 1;
+    div(phi,epsilon) Gauss limitedLinear 1;
+    div(phi,R)      Gauss limitedLinear 1;
+    div(R)          Gauss limitedLinear 1;
+    div(phi,omega)  Gauss limitedLinear 1;
+    div(phid,p)     Gauss limitedLinear 1;
+    div(phi,K)      Gauss limitedLinear 1;
+    div(phi,e)      Gauss limitedLinear 1;
+    div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;
+    div((nuEff*dev2(T(grad(U)))))   Gauss linear;
+    
+    // for the advectionDiffusion wallDist method
+    //div(yPhi,yWall) Gauss limitedLinear 1;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+    
+    // for the advectionDiffusion wallDist method
+    laplacian(yPsi) Gauss linear corrected;
+    //laplasian(yWall) Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         corrected ;
+}
+
+fluxRequired
+{
+    default         no;
+    pcorr           ;
+    p               ;
+    yPsi            ;
+}
+
+oversetInterpolation
+{
+    method          inverseDistance;
+    
+    // The inverseDistance method uses a 'voxel' like search structure.
+    // Optionally specify the extent and number of divisions n.
+    // Note that it will allocate an array of nx*ny*nz. If not specified:
+    // - searchBox          : local mesh bounding box
+    // - searchBoxDivisions : root (2D) or cube-root(3D) of number of cells
+    //searchBox           (-0.25 -1.5 1.5)(0.25 1.5 1.5);
+    //searchBoxDivisions  (50 50 50);
+}
+
+oversetInterpolationRequired
+{
+    k;
+    omega;
+    nut;
+}
+
+wallDist
+{
+    method Poisson;
+    /*method advectionDiffusion;
+    
+    // Optional entry enabling the calculation
+    // of the normal-to-wall field
+    nRequired false;
+
+    advectionDiffusionCoeffs
+    {
+        method    Poisson;
+        epsilon   0.1;
+        tolerance 1e-3;
+        maxIter   10;
+    }*/
+}
+
+// ************************************************************************* //
