@@ -6,3 +6,6 @@ This repository stores the main test cases which were used in my MSc project. Th
 
 This case demonstartes the base case where only trubine rotation is considered. The rotaton is implemented using the slidimg mesh interface (AMI in OpenFOAM terms).
 
+## overset_meshes
+
+This case demonstrates the set up of overset meshes. Both rotation and surge are included.
