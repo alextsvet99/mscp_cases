@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+forceCoefs
+{
+    // Mandatory entries
+    type            forceCoeffs;
+    libs            ("libforces.so");
+    patches         (rotor);
+
+
+    // Optional entries
+
+    // Field names
+    //p               p;
+    //U               U;
+    //rho             rho;
+    rho           rhoInf; // Indicates incompressible
+    rhoInf        1; // Redundant for incompressible
+
+    // Reference pressure [Pa]
+    //pRef            0;
+
+    // Include porosity effects?
+    //porosity        no;
+
+    // Store and write volume field representations of forces and moments
+    writeFields     no;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Lift direction
+    liftDir         (0 0 1);
+
+    // Drag direction
+    dragDir         (1 0 0);
+
+    // Pitch axis
+    pitchAxis       (0 1 0);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         4.19;
+
+    // Reference length [m]
+    lRef            1.18500;
+
+    // Reference area [m2]
+    Aref            4.41150;
+
+    // Spatial data binning
+    // - extents given by the bounds of the input geometry
+    /*binData
+    {
+        nBin        20;
+        direction   (1 0 0);
+        cumulative  yes;
+    }*/
+    
+    // Optional (inherited) entries
+    //region              region0;
+    //enabled             true;
+    log                 false;
+    //timeStart           0;
+    //timeEnd             1000;
+    executeControl      runTime; // none timeStep writeTime runTime adjustableRunTime clockTime cpuTime onEnd
+    executeInterval     1e-4;
+    writeControl        runTime;
+    writeInterval       1e-4;
+}
+
+// ************************************************************************* //

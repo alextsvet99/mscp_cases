@@ -1,0 +1,85 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+sampling_HWA
+{
+    type sets;
+    libs ("libsampling.so");
+    
+    fields (p U); // (p U Q)
+    interpolationScheme cellPointFace;
+    setFormat raw;
+    
+    sets
+    (
+        HWA_cw_00
+        {
+            // Mandatory entries
+            type        uniform;
+            axis        xyz;
+            start       (5.48 -1.6 0);
+            end         (5.48  1.6 0);
+            nPoints     33;
+
+            // Optional entries
+            //tol         <scalar>;
+        }
+        
+        HWA_cw_02
+        {
+            // Mandatory entries
+            type        uniform;
+            axis        xyz;
+            start       (5.48 -1.6 -0.2);
+            end         (5.48  1.6 -0.2);
+            nPoints     33;
+
+            // Optional entries
+            //tol         <scalar>;
+        }
+        
+        HWA_aw_07
+        {
+            // Mandatory entries
+            type        uniform;
+            axis        xyz;
+            start       (2.18 0.7 0.0);
+            end         (5.48 0.7 0.0);
+            nPoints     11;
+
+            // Optional entries
+            //tol         <scalar>;
+        }
+        
+        HWA_aw_09
+        {
+            // Mandatory entries
+            type        uniform;
+            axis        xyz;
+            start       (2.18 0.9 0.0);
+            end         (5.48 0.9 0.0);
+            nPoints     11;
+
+            // Optional entries
+            //tol         <scalar>;
+        }
+    )
+    
+    // Optional (inherited) entries
+    //region              region0;
+    //enabled             true;
+    log                 false;
+    timeStart           0.99585;
+    //timeEnd             1000;
+    executeControl      runTime; // none timeStep writeTime runTime adjustableRunTime clockTime cpuTime onEnd
+    executeInterval     0.02075;
+    writeControl        runTime;
+    writeInterval       0.02075;
+}
+
+// ************************************************************************* //
