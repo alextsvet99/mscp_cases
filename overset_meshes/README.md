@@ -12,20 +12,11 @@ Note: The overset boundary must be defined first in the boundary file.
 9. Run moveDynamicMesh to check the mesh motion.
 
 Notes on boundary and initial conditions:
-
-U, p, turbulence - as usual except for the interface boundary which is of type overset
-
-point displacement
-
-  interface - patchType overset; type - zeroGradient;
-  
-  rotor - zeroGradient;
-  
-  everything else - fixed at 0;
-  
-zoneID
-
-  interface - overset;
-  
-  everything else - zeroGradient;
-
+* U, p, turbulence - as usual except for the interface boundary which is of type overset
+* point displacement
+  - interface - patchType overset; type - zeroGradient;
+  - rotor - zeroGradient;
+  - everything else - fixed at 0;
+* zoneID
+  - interface - overset;
+  - everything else - zeroGradient;
