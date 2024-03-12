@@ -1,0 +1,67 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh dynamicMultiMotionSolverFvMesh;
+
+dynamicMultiMotionSolverFvMeshCoeffs
+{
+    turbine
+    {
+        motionSolverLibs (fvMotionSolvers);
+        motionSolver    solidBody;
+        cellZone        rotating_region;
+        solidBodyMotionFunction  multiMotion;
+        
+        rotation
+        {
+            solidBodyMotionFunction rotatingMotion;
+            origin (0 0 0);
+            axis (1 0 0);
+            omega 25.23746; // rad/s
+        }
+        
+        surge
+        {
+            solidBodyMotionFunction oscillatingLinearMotion;
+            amplitude (0.008 0 0);
+            omega 12.56637; // rad/s;
+        }
+    }
+    
+    outer_domain
+    {
+        motionSolverLibs (fvMotionSolvers);
+        motionSolver displacementLaplacian;
+        cellZone stationary_region;
+        diffusivity exponential 2 inverseDistance (ami_out);
+        /*
+        directional
+        exponential 2 inverseDistance (ami_out); - pretty good, max skewnness 2.27
+        exponential 3 inverseDistance (ami_out); - max skewnness 2.05
+        exponential 4 inverseDistance (ami_out); - max skewnness 1.96
+        file
+        inverseDistance (ami_out); - max skewnness 2.29
+        inverseFaceDistance
+        inversePointDistance
+        inverseVolume (ami_out);
+        motionDirectional
+        quadratic inverseDistance (ami_out);
+        uniform - meh
+        */
+    }
+};
+
+// ************************************************************************* //

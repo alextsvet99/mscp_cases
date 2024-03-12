@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      createPatchDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+pointSync false;
+
+patches
+(
+    // Cyclic AMI patches
+    // Source patch
+    {
+        name            ami_in;
+        patchInfo
+        {
+            type            cyclicAMI;
+            matchTolerance  0.0001;
+            neighbourPatch  ami_out;
+            transform       noOrdering;
+        }
+        constructFrom patches;
+        patches (ami_inner);
+    }
+    
+    // Target patch
+    {
+        name            ami_out;
+        patchInfo
+        {
+            type            cyclicAMI;
+            matchTolerance  0.0001;
+            neighbourPatch  ami_in;
+            transform       noOrdering;
+        }
+        constructFrom patches;
+        patches (ami_outer);
+    }
+    
+    // Cyclic inlet and outlet patches
+    {
+        name            outlet_cyclic;
+        patchInfo
+        {
+            type            cyclicAMI;
+            matchTolerance  0.0001;
+            neighbourPatch  inlet_cyclic;
+            transform       translational;
+            separationVector (-17 0 0);
+        }
+        constructFrom patches;
+        patches (outlet);
+    }
+    {
+        name            inlet_cyclic;
+        patchInfo
+        {
+            type            cyclicAMI;
+            matchTolerance  0.0001;
+            neighbourPatch  outlet_cyclic;
+            transform       translational; // unknown rotational translational
+            separationVector (17 0 0);
+        }
+        constructFrom patches;
+        patches (inlet);
+    }
+);
+
+// ************************************************************************* //
