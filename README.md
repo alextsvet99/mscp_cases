@@ -8,7 +8,7 @@ This case demonstrates the set up of overset meshes. Both rotation and surge are
 
 ## steady_rotation_isolated
 
-This case demonstrates the base case where only turbine rotation is considered. The rotaton is implemented using the sliding mesh interface (AMI in OpenFOAM terms).
+This case demonstrates the base case where only turbine rotation is considered. The rotaton is implemented using a sliding mesh interface (AMI in OpenFOAM terms).
 
 ## steady_rotation_inWake
 
@@ -50,3 +50,18 @@ Notes on boundary and initial conditions:
 ## Workflow for setting up a surging AMI case
 
 The following is a general description of steps needed to combine AMI and morphing mesh.
+
+1. Create meshes for rotating and stationary regions separately.
+2. Merge meshes with mergeMesh. Order of merging (master/slave) doesn't seem to matter.
+3. Renumber mesh.
+4. Create AMIs with createPatch. Order of AMI patches (master/slave) doesn't seem to matter.
+5. Run checkMesh to create cellSets.
+6. Create all sets and zones:
+- faceZone fot translation faces - for defining surge;
+- cellZone for rotating region - for defining rotation and surge;
+- cellZone for stationary region - for defining deformation;
+- faceSet for all AMI faces - needed for decomposition constraints;
+7. Define motions in dynamicMeshDict.
+8. Run moveDynamicMesh -noFunctionObjects -checkAMI.
+
+Notes:
